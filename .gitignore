@@ -1,0 +1,4 @@
+/.idea/
+/.venv/
+/clip-api_data/
+/docker-compose.yml

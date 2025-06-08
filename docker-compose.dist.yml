@@ -1,0 +1,26 @@
+x-shared-logs: &shared-logs
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "100k"
+
+x-shared-deploy: &shared-deploy
+  deploy:
+    resources:
+      reservations:
+        devices:
+          - driver: nvidia
+            device_ids: [ "0" ]
+            capabilities: [ "gpu" ]
+  <<: *shared-logs
+
+services:
+  clip-api:
+    build: .
+    volumes:
+      - ./clip-api_data:/root/.cache
+    environment:
+      CLIP_MODEL: openai/clip-vit-base-patch16
+    ports:
+      - "3000:3000"
+    <<: *shared-deploy
